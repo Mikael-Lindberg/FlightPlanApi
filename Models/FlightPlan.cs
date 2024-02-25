@@ -17,7 +17,7 @@ namespace FlightPlanApi.Models
         public int Airspeed { get; set; }
 
         [JsonPropertyName("altitude")]
-        public int altitude { get; set; }
+        public int Altitude { get; set; }
 
         [JsonPropertyName("flight_type")]
         public string? FlightType { get; set; }
