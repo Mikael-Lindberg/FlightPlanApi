@@ -3,6 +3,8 @@ using FlightPlanApi.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Swashbuckle.AspNetCore.Annotations;
+using System.Net;
 
 namespace FlightPlanApi.Controllers
 {
@@ -19,6 +21,7 @@ namespace FlightPlanApi.Controllers
 
         [HttpGet]
         [Authorize]
+        [SwaggerResponse((int)HttpStatusCode.NoContent, "No flight plans have been filed with this system.")]
         public async Task<IActionResult> FlightPlanList()
         {
             var flightPlanList = await _database.GetAllFightPlans();
@@ -46,6 +49,21 @@ namespace FlightPlanApi.Controllers
             return Ok(flightPlan);
         }
 
+        /// <summary>
+        /// Files a new flight plan with the system
+        /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /api/v1/flightplan/file
+        ///     {
+        ///         "dwadaw": "dwad" ... 
+        ///     }
+        /// </remarks>
+        /// <param name="flightPlan">The flight plan data to be filed.</param>
+        /// <response code="400">There is a problem with the flight plan data received by this system.</response>
+        /// <response code="500">The flight plan is valid but this sytem cannot process it.</response>
+        /// <returns></returns>
         [HttpPost]
         [Authorize]
         [Route("file")]
